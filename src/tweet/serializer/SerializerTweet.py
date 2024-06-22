@@ -2,11 +2,11 @@ from rest_framework import serializers
 
 from tweet.models import Feeds
 
-class TweetSerializer(serializers.ModelSerializer):
-	
+class TweetSerializer(serializers.ModelSerializer):		
+
 	class Meta:
 		model = Feeds
-		fields = ['users','content','media','retwet']
+		fields = ['users','content','media','retwet','retweet']
 		extra_kwargs = {
 			"users":{
 				"error_messages":{
