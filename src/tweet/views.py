@@ -3,7 +3,10 @@ from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import FormParser,MultiPartParser
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated	
+from django.conf import settings
 ################
 
 #Serialzer
@@ -18,17 +21,42 @@ from tweet.models import Feeds, Retweet, Likes
 from users.models import Users
 ################
 
+import json
+
 class PostingTweet(CreateAPIView):
 	serializer_class = TweetSerializer
 	renderer_classes = [JSONRenderer]
+	parser_classes = [MultiPartParser, FormParser]
 	allowed_methods = 'POST'
 	def create(self,req,*args,**kwargs):
-		serializer = self.serializer_class(data=req.data)
+
+		# Ambil Data Form
+		if "users" not in req.data or "content" not in req.data:
+			return Response({"status":400,"Message":"Membutuhkan Fields Users And Content"},status=400)
+
+		data = {
+			"users":int(req.data['users']),
+			"content":str(req.data['content'])
+		}
+
+		if "media" in req.data:			
+			if req.data['media'].size > 500000:			
+				return Response({"status":400,"message":"File Maksimum 400 KB"},status=400)
+			elif req.data['media'].name.lower().endswith(('.jpg','.png','.gif')) is False:
+				return Response({"status":400,"message":"Only JPG / PNG / GIF"},status=400)
+			y = {"media":req.data['media']}
+			data.update(y)
+
+		if "typeretwet" in req.data:
+			y = {"typeretwet":bool(req.data['typeretwet'])}
+			data.update(y)
+			
+		serializer = self.serializer_class(data=data)
 		serializer.is_valid(raise_exception=True)
 		instance = serializer.save()
-		if "typeretwet" in req.data and req.data['typeretwet']:
-			user = Users.objects.filter(id=req.data['users']).first()
-			retweet =  Feeds.objects.filter(id=req.data['wheretweet']).first()
+		if "typeretwet" in req.data and bool(req.data['typeretwet']):
+			user = Users.objects.filter(id=int(req.data['users'])).first()
+			retweet =  Feeds.objects.filter(id=int(req.data['wheretweet'])).first()
 			objek = Retweet.objects.create(
 					users=user,
 					feeds=instance,
@@ -53,6 +81,7 @@ class PostingTweet(CreateAPIView):
 class TweetAll(ListAPIView):
 	serializer_class = GetAllTweet
 	renderer_classes = [JSONRenderer]
+	permission_classes = [IsAuthenticated]
 	model = Feeds
 	queryset = Feeds.objects.filter(retweet=False)
 	# a = Retweet.objects.filter(retwet__id=2)

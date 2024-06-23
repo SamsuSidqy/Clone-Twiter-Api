@@ -24,3 +24,4 @@ class TweetSerializer(serializers.ModelSerializer):
 				"required":False
 			}
 		}
+	

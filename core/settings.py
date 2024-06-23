@@ -26,6 +26,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'src'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ln%(7191y=d_b*!&@(nvmg(9x5leo%=)mh=*a7akl-e6wk6h45'
+KEY_FOR_API = 'm8-9i2YEH;B4f+1der4HFu[u*Gf"V:-?(rJ0maQGzrMvfmzS|qOyF1sA=4(O]T+O(;y3AWW;yuGvdTgbJbZ?HIQv"eM5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    # "rest_framework_api_key",
+
     'src.users',
     'src.tweet'
 
@@ -136,7 +139,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_ROOT = BASE_DIR / 'media/'
-
+MEDIA_URL = '/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
