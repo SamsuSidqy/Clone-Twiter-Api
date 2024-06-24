@@ -7,7 +7,7 @@ class Users(AbstractUser):
 	name = models.CharField(max_length=150,blank=True)
 	verify = models.BooleanField(default=False)
 	email = models.CharField(max_length=150,unique=True,error_messages={"unique":"Email Sudah Terpakai"})
-	profile = models.TextField(blank=True)
+	profile = models.FileField(blank=True,upload_to='profile/')
 	bio = models.TextField(blank=True)
 	password = models.TextField()
 	follow = models.BigIntegerField(default=0)

@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Users
-		fields = ('username','password','email','id','profile','created_at')
+		fields = ('username','password','email','id','created_at')
 		extra_kwargs ={
 			"username":{
 				"error_messages":{
@@ -41,5 +41,4 @@ class UserSerializer(serializers.ModelSerializer):
 		validated_data['password'] = hasing
 		return super().create(validated_data)
 
-	
 
