@@ -116,10 +116,11 @@ class ProfileUsers(APIView):
 		user = Users.objects.filter(id=pk).first()
 		if user is None:
 			return Response({"status":404,"message":"Users Tidak Ditemukan"},status=404)
-
+		print(user.created_at.time())
 		#  Mengatur Waktu Date
 		waktu = user.created_at.strftime('%d %B %Y')
-		jam = user.created_at.strftime('%H:%M')
+		jam = user.created_at.strftime('%I:%M')
+		
 		data ={
 			"username":user.username,
 			"id_users":user.id,
@@ -137,7 +138,6 @@ class ProfileUsers(APIView):
 		return Response({"status":200,"data":data})
 
 class UpdateProfile(APIView):
-	allowed_methods = 'POST'
 	def post(self,req,pk):
 		authorize = req.headers.get('testing')
 		if authorize is None :
@@ -148,11 +148,15 @@ class UpdateProfile(APIView):
 		user = Users.objects.filter(id=pk).first()
 		if user is None:
 			return Response({"status":404},status=404)
-
-		user.username = req.data.get('username')
-		user.profile = req.data.get('profile')
-		user.name = req.data.get('name')
-		user.bio = req.data.get('bio')
+		
+		if "username" in req.data:
+			user.username = req.data.get('username').replace(" ","").lower()
+		elif "profile" in req.data:
+			user.profile = req.data.get('profile')
+		elif "name" in req.data:
+			user.name = req.data.get('name')
+		elif "bio" in req.data:
+			user.bio = req.data.get('bio')
 		user.save()
 
 		return Response({"status":200})
