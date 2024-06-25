@@ -5,11 +5,12 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
-
+from oauth2_provider.models import AccessToken
+from oauthlib.common import generate_token 	
+from oauth2_provider.contrib.rest_framework import TokenHasResourceScope, TokenHasScope, OAuth2Authentication
 ################
 
 # Serializer
@@ -29,10 +30,10 @@ class CreateUser(CreateAPIView):
 	renderer_classes = [JSONRenderer]
 	allowed_methods = 'POST'
 	def create(self,req,*args,**kwargs):
-		token = req.headers.get('testing')
-		if token is None :
+		authorize = req.headers.get('testing')
+		if authorize is None :
 			return Response({"status":403},status=403)
-		elif token != settings.KEY_FOR_API:
+		elif authorize != settings.KEY_FOR_API:
 			return Response({"status":401},status=401)
 		serializer = self.serializer_class(data=req.data)
 		serializer.is_valid(raise_exception=True)
@@ -69,31 +70,29 @@ class LoginUsers(APIView):
 
 		if check_password(password,ambilUser.password) is False:
 			return Response({"status":404,"message":"Username / Password Salah"},status=404)
-
-		if Token.objects.filter(user=ambilUser)	.first():
-			print(ambilUser.__dict__)
-			return Response({"status":401,"message":"Anda Sudah Login"},status=401)
-
-		token = Token.objects.create(user=ambilUser)
 		
+		
+		checkingToken = AccessToken.objects.filter(user=ambilUser).first()
+
+		if checkingToken:
+			return Response({"status":401,"message":"Anda Sudah Login"})
+		token = generate_token()
+		createToken = AccessToken.objects.create(user=ambilUser,expires=datetime(2024,6,30),token=token)
 		data = {
 			"status":200,
 			"username":ambilUser.username,
 			"id_user":ambilUser.id,
-			"token":str(token)
+			"token_bearer":createToken.token,
+			'expires':createToken.expires,
 		}
 		return Response(data)
 
 
 class LogoutUsers(APIView):
 	allowed_methods = 'POST'
-	def post(self,req):
-		authorize = req.headers.get('testing')
-		if authorize is None :
-			return Response({"status":403},status=403)
-		elif authorize != settings.KEY_FOR_API:
-			return Response({"status":401},status=401)
-
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
+	def post(self,req):		
 		if "id_users" not in req.data:
 			return Response({"status":400,"message":"id_user Di Butuhkan"},status=400)
 
@@ -106,21 +105,17 @@ class LogoutUsers(APIView):
 
 class ProfileUsers(APIView):
 	allowed_methods = 'GET'
-	def get(self,req,pk):
-		authorize = req.headers.get('testing')
-		if authorize is None :
-			return Response({"status":403},status=403)
-		elif authorize != settings.KEY_FOR_API:
-			return Response({"status":401},status=401)
-
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
+	def get(self,req,pk):		
 		user = Users.objects.filter(id=pk).first()
 		if user is None:
 			return Response({"status":404,"message":"Users Tidak Ditemukan"},status=404)
-		print(user.created_at.time())
+		token = AccessToken.objects.filter(user=user).first()
+		print(user.created_at.ctime())	
 		#  Mengatur Waktu Date
-		waktu = user.created_at.strftime('%d %B %Y')
-		jam = user.created_at.strftime('%I:%M')
-		
+		waktu = user.created_at.strftime('%d %B %Y')	
+		cekrequest = req.headers.get('Authorization') == f"Bearer {token.token}"
 		data ={
 			"username":user.username,
 			"id_users":user.id,
@@ -131,7 +126,8 @@ class ProfileUsers(APIView):
 			"bio":user.bio,
 			"follow":user.follow,
 			"date_joined":waktu,
-			"jam":jam
+			"token_bearer":token.token if cekrequest else 'Forbidden',
+			"expires_token"	:token.expires if cekrequest else 'Forbidden',
 		}
 
 		# print(int(round(user.created_at.timestamp())),user.created_at)

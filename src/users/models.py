@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django.utils import timezone
 
 class Users(AbstractUser):
 	username = models.CharField(max_length=150,unique=True,error_messages={"unique":"Username Sudah Terpakai"})
@@ -11,7 +11,12 @@ class Users(AbstractUser):
 	bio = models.TextField(blank=True)
 	password = models.TextField()
 	follow = models.BigIntegerField(default=0)
-	created_at = models.DateTimeField(auto_now_add=True)
+	created_at = models.DateTimeField(default=timezone.now())
+
+	def save(self,*args,**kwargs):
+		username = self.username.replace(" ","").lower()
+		self.username = username
+		super(Users,self).save(*args,**kwargs)
 
 
 class Followers(models.Model):

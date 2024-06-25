@@ -5,14 +5,15 @@ from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import FormParser,MultiPartParser
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated	
 from django.conf import settings
+from oauth2_provider.models import AccessToken
+from oauthlib.common import generate_token 	
+from oauth2_provider.contrib.rest_framework import TokenHasResourceScope, TokenHasScope, OAuth2Authentication
 ################
 
 #Serialzer
 from tweet.serializer.SerializerTweet import TweetSerializer
 from tweet.serializer.SerializerRetweet import RetweetSerializer
-
 from tweet.serializer.GetTweet import GetAllTweet,GetRetweet
 ################
 
@@ -27,6 +28,8 @@ class PostingTweet(CreateAPIView):
 	serializer_class = TweetSerializer
 	renderer_classes = [JSONRenderer]
 	parser_classes = [MultiPartParser, FormParser]
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
 	allowed_methods = 'POST'
 	def create(self,req,*args,**kwargs):
 
@@ -48,7 +51,12 @@ class PostingTweet(CreateAPIView):
 			data.update(y)
 
 		if "typeretwet" in req.data:
-			y = {"typeretwet":bool(req.data['typeretwet'])}
+			if "wheretweet" not in req.data:
+				return Response({"status":400,"message":"Bad Requests"})
+			twet = Feeds.objects.filter(id=int(req.data.get('wheretweet'))).first()
+			if twet is None:
+				return Response({"status":400,"message":"Bad Requests"})
+			y = {"retweet":bool(req.data['typeretwet'])}
 			data.update(y)
 			
 		serializer = self.serializer_class(data=data)
@@ -81,9 +89,12 @@ class PostingTweet(CreateAPIView):
 class TweetAll(ListAPIView):
 	serializer_class = GetAllTweet
 	renderer_classes = [JSONRenderer]
-	permission_classes = [IsAuthenticated]
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]	
 	model = Feeds
 	queryset = Feeds.objects.filter(retweet=False)
+	a = Feeds.objects.filter(retweet=False)
+
 	# a = Retweet.objects.filter(retwet__id=2)
 	# print(queryset)
 	# print(a)
@@ -91,6 +102,8 @@ class TweetAll(ListAPIView):
 class RetweetAll(ListAPIView):
 	serializer_class = GetRetweet
 	renderer_classes = [JSONRenderer]
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
 	models = Retweet
 	# queryset = Retweet.objects.all()
 
@@ -102,6 +115,8 @@ class RetweetAll(ListAPIView):
 
 class LikeFeeds(APIView):	
 	allowed_methods = 'GET'
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
 	def get(self,req,pk,author):
 		try:
 			objek = Feeds.objects.get(id=pk)
@@ -117,6 +132,8 @@ class LikeFeeds(APIView):
 
 class UnlikeFeeds(APIView):
 	allowed_methods = 'GET'
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
 	def get(self,req,pk,author):
 		try:
 			objek = Feeds.objects.get(id=pk)

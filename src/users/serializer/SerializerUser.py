@@ -41,4 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
 		validated_data['password'] = hasing
 		return super().create(validated_data)
 
-
+class TweetUsers(serializers.ModelSerializer):
+	class Meta:
+		model = Users
+		fields = ['username','verify','follow','profile']

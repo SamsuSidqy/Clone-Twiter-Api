@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from tweet.models import Feeds
 
 class TweetSerializer(serializers.ModelSerializer):		

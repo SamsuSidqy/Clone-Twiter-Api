@@ -1,8 +1,9 @@
 from rest_framework import serializers
-
+from users.serializer.SerializerUser import TweetUsers
 from tweet.models import Feeds, Retweet
 
 class GetAllTweet(serializers.ModelSerializer):
+	users = TweetUsers()
 	class Meta:
 		model = Feeds
 		fields ='__all__'

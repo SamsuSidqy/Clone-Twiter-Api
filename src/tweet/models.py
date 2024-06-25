@@ -1,7 +1,7 @@
 from django.db import models
 
 from users.models import Users
-
+from django.utils import timezone
 
 
 class Feeds(models.Model):
@@ -11,7 +11,7 @@ class Feeds(models.Model):
 	retweet = models.BooleanField(default=False)
 	likes = models.BigIntegerField(default=0)
 	kode = models.TextField()
-	created_at = models.DateTimeField(auto_now_add=True)
+	created_at = models.DateTimeField(default=timezone.now())
 
 
 class Retweet(models.Model):
