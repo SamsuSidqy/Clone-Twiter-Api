@@ -30,7 +30,7 @@ class CreateUser(CreateAPIView):
 	renderer_classes = [JSONRenderer]
 	allowed_methods = 'POST'
 	def create(self,req,*args,**kwargs):
-		authorize = req.headers.get('testing')
+		authorize = req.headers.get(settings.HEADER_KEY)
 		if authorize is None :
 			return Response({"status":403},status=403)
 		elif authorize != settings.KEY_FOR_API:
@@ -53,7 +53,7 @@ class CreateUser(CreateAPIView):
 
 class LoginUsers(APIView):
 	def post(self,req):
-		authorize = req.headers.get('testing')
+		authorize = req.headers.get(settings.HEADER_KEY)
 		if authorize is None :
 			return Response({"status":403},status=403)
 		elif authorize != settings.KEY_FOR_API:
@@ -77,7 +77,7 @@ class LoginUsers(APIView):
 		if checkingToken:
 			return Response({"status":401,"message":"Anda Sudah Login"})
 		token = generate_token()
-		createToken = AccessToken.objects.create(user=ambilUser,expires=datetime(2024,6,30),token=token)
+		createToken = AccessToken.objects.create(user=ambilUser,expires=datetime(2024,7,30),token=token)
 		data = {
 			"status":200,
 			"username":ambilUser.username,
@@ -89,15 +89,15 @@ class LoginUsers(APIView):
 
 
 class LogoutUsers(APIView):
-	allowed_methods = 'POST'
+	allowed_methods = 'POST'	
 	authentication_classes  = [OAuth2Authentication]
 	permission_classes = [TokenHasResourceScope]
 	def post(self,req):		
 		if "id_users" not in req.data:
-			return Response({"status":400,"message":"id_user Di Butuhkan"},status=400)
+			return Response({"status":400,"message":"id_users Di Butuhkan"},status=400)
 
 		user = Users.objects.filter(id=req.data.get('id_users')).first()
-		token = Token.objects.filter(user=user).first()
+		token = AccessToken.objects.filter(user=user).first()
 		if user is not None and token is not None:				
 			token.delete()
 			return Response({"status":200,"message":"Anda Berhasil Logout"})
@@ -108,14 +108,14 @@ class ProfileUsers(APIView):
 	authentication_classes  = [OAuth2Authentication]
 	permission_classes = [TokenHasResourceScope]
 	def get(self,req,pk):		
-		user = Users.objects.filter(id=pk).first()
+		user = Users.objects.filter(username=pk).first()
 		if user is None:
 			return Response({"status":404,"message":"Users Tidak Ditemukan"},status=404)
-		token = AccessToken.objects.filter(user=user).first()
+		token = AccessToken.objects.filter(user=user).first()		
 		print(user.created_at.ctime())	
 		#  Mengatur Waktu Date
 		waktu = user.created_at.strftime('%d %B %Y')	
-		cekrequest = req.headers.get('Authorization') == f"Bearer {token.token}"
+		cekrequest = req.headers.get('Authorization') == f"Bearer {token}"
 		data ={
 			"username":user.username,
 			"id_users":user.id,
@@ -134,24 +134,21 @@ class ProfileUsers(APIView):
 		return Response({"status":200,"data":data})
 
 class UpdateProfile(APIView):
-	def post(self,req,pk):
-		authorize = req.headers.get('testing')
-		if authorize is None :
-			return Response({"status":403},status=403)
-		elif authorize != settings.KEY_FOR_API:
-			return Response({"status":401},status=401)
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
 
+	def post(self,req,pk):		
 		user = Users.objects.filter(id=pk).first()
 		if user is None:
 			return Response({"status":404},status=404)
-		
+
 		if "username" in req.data:
 			user.username = req.data.get('username').replace(" ","").lower()
-		elif "profile" in req.data:
+		if "profile" in req.data:
 			user.profile = req.data.get('profile')
-		elif "name" in req.data:
+		if "name" in req.data:
 			user.name = req.data.get('name')
-		elif "bio" in req.data:
+		if "bio" in req.data:
 			user.bio = req.data.get('bio')
 		user.save()
 
@@ -160,12 +157,10 @@ class UpdateProfile(APIView):
 
 class FollowUser(APIView):
 	allowed_methods = 'GET'
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
 	def get(self,req,pk):
-		authorize = req.headers.get('testing')
-		if authorize is None :
-			return Response({"status":403},status=403)
-		elif authorize != settings.KEY_FOR_API:
-			return Response({"status":401},status=401)
+		
 		userToFollow = Users.objects.filter(id=req.data.get('id_users')).first()
 		followToUser = Users.objects.filter(id=pk).first()
 		if userToFollow is not None and followToUser is not None:

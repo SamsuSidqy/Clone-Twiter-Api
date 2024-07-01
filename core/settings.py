@@ -27,11 +27,12 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'src'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ln%(7191y=d_b*!&@(nvmg(9x5leo%=)mh=*a7akl-e6wk6h45'
 KEY_FOR_API = 'm8-9i2YEH;B4f+1der4HFu[u*Gf"V:-?(rJ0maQGzrMvfmzS|qOyF1sA=4(O]T+O(;y3AWW;yuGvdTgbJbZ?HIQv"eM5'
+HEADER_KEY = 'x-Gue'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

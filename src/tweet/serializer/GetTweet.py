@@ -20,3 +20,8 @@ class LikeTweet(serializers.ModelSerializer):
 	class Meta:
 		model = Feeds
 		fields = ['likes']
+
+class SingleTweet(serializers.ModelSerializer):
+	class Meta:
+		model = Feeds
+		fields = '__all__'

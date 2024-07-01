@@ -1,6 +1,6 @@
 # Django
 from django.shortcuts import render
-from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import FormParser,MultiPartParser
@@ -14,7 +14,7 @@ from oauth2_provider.contrib.rest_framework import TokenHasResourceScope, TokenH
 #Serialzer
 from tweet.serializer.SerializerTweet import TweetSerializer
 from tweet.serializer.SerializerRetweet import RetweetSerializer
-from tweet.serializer.GetTweet import GetAllTweet,GetRetweet
+from tweet.serializer.GetTweet import GetAllTweet,GetRetweet,SingleTweet
 ################
 
 #Models
@@ -99,6 +99,21 @@ class TweetAll(ListAPIView):
 	# print(queryset)
 	# print(a)
 
+class SingleTweet(RetrieveAPIView):
+	serializer_class = SingleTweet
+	renderer_classes = [JSONRenderer]
+	models = Feeds
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
+	lookup_field = 'slug'
+
+	def get_queryset(self):
+		slug = self.kwargs.get('slug')
+		print(slug)
+		queryset = Feeds.objects.filter(slug=slug)
+		return queryset
+
+
 class RetweetAll(ListAPIView):
 	serializer_class = GetRetweet
 	renderer_classes = [JSONRenderer]
@@ -125,26 +140,15 @@ class LikeFeeds(APIView):
 				objek.likes += 1
 				Likes.objects.create(users=author,feeds=pk).save()			
 				objek.save()
-			return Response({"message":200},status=200)
-		except Feeds.DoesNotExist:
-			return Response({"message":404},status=404)
-
-
-class UnlikeFeeds(APIView):
-	allowed_methods = 'GET'
-	authentication_classes  = [OAuth2Authentication]
-	permission_classes = [TokenHasResourceScope]
-	def get(self,req,pk,author):
-		try:
-			objek = Feeds.objects.get(id=pk)
-			ceklike = Likes.objects.filter(users=author,feeds=pk).first()
-			if objek.likes > 0 and ceklike:
-				objek.likes -= 1
+			else:
+				if objek.likes > 0:
+					objek.likes -= 1
+					objek.save()
 				ceklike.delete()
-				objek.save()
 			return Response({"message":200},status=200)
 		except Feeds.DoesNotExist:
 			return Response({"message":404},status=404)
+
 
 
 
