@@ -93,7 +93,6 @@ class TweetAll(ListAPIView):
 	permission_classes = [TokenHasResourceScope]	
 	model = Feeds
 	queryset = Feeds.objects.filter(retweet=False)
-	a = Feeds.objects.filter(retweet=False)
 
 	# a = Retweet.objects.filter(retwet__id=2)
 	# print(queryset)
@@ -114,7 +113,7 @@ class SingleTweet(RetrieveAPIView):
 		return queryset
 
 
-class RetweetAll(ListAPIView):
+class RetweetBase(ListAPIView):
 	serializer_class = GetRetweet
 	renderer_classes = [JSONRenderer]
 	authentication_classes  = [OAuth2Authentication]

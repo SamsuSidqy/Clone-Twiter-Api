@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from tweet.models import Retweet
 
 class RetweetSerializer(serializers.ModelSerializer):
@@ -26,3 +25,4 @@ class RetweetSerializer(serializers.ModelSerializer):
 				}
 			}
 		}
+

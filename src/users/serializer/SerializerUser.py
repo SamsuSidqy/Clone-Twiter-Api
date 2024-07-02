@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Users
-		fields = ('username','password','email','id','created_at')
+		fields = ('username','password','email','id','created_at','name')
 		extra_kwargs ={
 			"username":{
 				"error_messages":{
@@ -31,6 +31,12 @@ class UserSerializer(serializers.ModelSerializer):
 				"error_messages":{
 					"required":"Password Di Perlukan",
 				}
+			},
+			"name":{
+				"error_messages":{
+					"required":"Name Di Perlukan"
+				},
+				"required":True
 			}
 		}
 
@@ -44,4 +50,4 @@ class UserSerializer(serializers.ModelSerializer):
 class TweetUsers(serializers.ModelSerializer):
 	class Meta:
 		model = Users
-		fields = ['username','verify','follow','profile','name']
+		fields = ['username','verify','follow','profile','name','id']

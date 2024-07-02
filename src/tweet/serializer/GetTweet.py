@@ -22,6 +22,15 @@ class LikeTweet(serializers.ModelSerializer):
 		fields = ['likes']
 
 class SingleTweet(serializers.ModelSerializer):
+	users = TweetUsers()
 	class Meta:
 		model = Feeds
 		fields = '__all__'
+
+class TweetAllRetweet(serializers.ModelSerializer):
+	class Meta:
+		model = Feeds
+		fields = ['id','content']
+
+
+
