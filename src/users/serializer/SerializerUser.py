@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from rest_framework.validators import UniqueValidator
 
 # Model
-from users.models import Users
+from users.models import Users,Followers
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -51,3 +51,20 @@ class TweetUsers(serializers.ModelSerializer):
 	class Meta:
 		model = Users
 		fields = ['username','verify','follow','profile','name','id']
+
+class FollowersSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Followers
+		fields = '__all__'
+
+class ShowingUsers(serializers.ModelSerializer):	
+	class Meta:
+		model = Users
+		fields = ('date_joined','username','name','verify','email','profile','id')
+
+class SearchingAll(serializers.ModelSerializer):
+	class Meta:
+		model = Users
+		fields = ['username','name','profile','id']
+
+

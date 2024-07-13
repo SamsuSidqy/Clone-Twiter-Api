@@ -5,7 +5,7 @@ class TweetSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Feeds
-		fields = ['users','content','media','retwet','retweet']
+		fields = ['users','content','media','retwet','slug','retweet','created_at']
 		extra_kwargs = {
 			"users":{
 				"error_messages":{
@@ -20,6 +20,12 @@ class TweetSerializer(serializers.ModelSerializer):
 				}
 			},
 			"retwet":{
+				"required":False
+			},
+			"slug":{
+				"required":False
+			},
+			"created_at":{
 				"required":False
 			}
 		}

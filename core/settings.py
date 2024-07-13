@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'oauth2_provider',
+    'ipware',
     'src.users',
     'src.tweet'
 
@@ -131,7 +132,6 @@ TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

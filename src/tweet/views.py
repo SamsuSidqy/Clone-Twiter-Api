@@ -14,7 +14,8 @@ from oauth2_provider.contrib.rest_framework import TokenHasResourceScope, TokenH
 #Serialzer
 from tweet.serializer.SerializerTweet import TweetSerializer
 from tweet.serializer.SerializerRetweet import RetweetSerializer
-from tweet.serializer.GetTweet import GetAllTweet,GetRetweet,SingleTweet
+from tweet.serializer.GetTweet import GetAllTweet,GetRetweet,SingleTweet 
+from tweet.serializer.LikeSerializer import GetDataLikesFeeds
 ################
 
 #Models
@@ -23,6 +24,9 @@ from users.models import Users
 ################
 
 import json
+from datetime import datetime
+from uuid import uuid4
+
 
 class PostingTweet(CreateAPIView):
 	serializer_class = TweetSerializer
@@ -36,18 +40,21 @@ class PostingTweet(CreateAPIView):
 		# Ambil Data Form
 		if "users" not in req.data or "content" not in req.data:
 			return Response({"status":400,"Message":"Membutuhkan Fields Users And Content"},status=400)
-
+		users = None
+		
+		slug = f"{uuid4()}-{datetime.now().year}{datetime.now().day}{datetime.now().month}"
 		data = {
-			"users":int(req.data['users']),
-			"content":str(req.data['content'])
-		}
-
-		if "media" in req.data:			
-			if req.data['media'].size > 500000:			
+			"users":int(req.data.get('users')),
+			"content":str(req.data['content']),
+			"slug":slug,
+			"created_at":datetime.now(),
+		}		
+		if "media" in req.data:					
+			if req.data.get('media').size > 500000:			
 				return Response({"status":400,"message":"File Maksimum 400 KB"},status=400)
-			elif req.data['media'].name.lower().endswith(('.jpg','.png','.gif')) is False:
+			elif req.data.get('media').name.lower().endswith(('.jpg','.png','.gif')) is False:
 				return Response({"status":400,"message":"Only JPG / PNG / GIF"},status=400)
-			y = {"media":req.data['media']}
+			y = {"media":req.data.get('media')}
 			data.update(y)
 
 		if "typeretwet" in req.data:
@@ -97,6 +104,13 @@ class TweetAll(ListAPIView):
 	# a = Retweet.objects.filter(retwet__id=2)
 	# print(queryset)
 	# print(a)
+class LikeAll(ListAPIView):
+	serializer_class = GetDataLikesFeeds
+	renderer_classes = [JSONRenderer]
+	authentication_classes = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
+	models = Likes
+	queryset = Likes.objects.all()
 
 class SingleTweet(RetrieveAPIView):
 	serializer_class = SingleTweet
@@ -126,6 +140,13 @@ class RetweetBase(ListAPIView):
 		queryset = Retweet.objects.filter(retwet_id=idd)						
 		return queryset
 		
+class RetweetAll(ListAPIView):
+	serializer_class = GetRetweet
+	renderer_classes = [JSONRenderer]
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
+	models = Retweet
+	queryset = Retweet.objects.all()
 
 class LikeFeeds(APIView):	
 	allowed_methods = 'GET'

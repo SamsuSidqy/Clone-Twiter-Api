@@ -1,7 +1,7 @@
 
 # Django
 from django.shortcuts import render
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
@@ -11,10 +11,12 @@ from django.contrib.auth.hashers import make_password, check_password
 from oauth2_provider.models import AccessToken
 from oauthlib.common import generate_token 	
 from oauth2_provider.contrib.rest_framework import TokenHasResourceScope, TokenHasScope, OAuth2Authentication
+from django.conf import settings
+from ipware import get_client_ip
 ################
 
 # Serializer
-from users.serializer.SerializerUser import UserSerializer
+from users.serializer.SerializerUser import UserSerializer, FollowersSerializer,ShowingUsers,SearchingAll
 #######
 
 # Model
@@ -24,6 +26,7 @@ from users.models import Users,Followers
 import json
 import os
 from datetime import datetime
+
 
 class CreateUser(CreateAPIView):
 	serializer_class = UserSerializer
@@ -52,7 +55,7 @@ class CreateUser(CreateAPIView):
 
 
 class LoginUsers(APIView):
-	def post(self,req):
+	def post(self,req):				
 		authorize = req.headers.get(settings.HEADER_KEY)
 		if authorize is None :
 			return Response({"status":403},status=403)
@@ -78,13 +81,22 @@ class LoginUsers(APIView):
 			return Response({"status":401,"message":"Anda Sudah Login"})
 		token = generate_token()
 		createToken = AccessToken.objects.create(user=ambilUser,expires=datetime(2024,7,30),token=token)
+		
+		serializer = ShowingUsers(ambilUser)
+		pathImage = f"{req.META['wsgi.url_scheme']}://{req.META['HTTP_HOST']}{serializer.data['profile']}"
+		
 		data = {
-			"status":200,
-			"username":ambilUser.username,
-			"id_user":ambilUser.id,
-			"token_bearer":createToken.token,
-			'expires':createToken.expires,
+			"username":serializer.data['username'],
+			"name":serializer.data['name'],
+			"id":serializer.data['id'],
+			"email":serializer.data['email'],
+			"profile": pathImage if serializer.data['profile'] else None,
+			"token":createToken.token,
+			"expires":createToken.expires
 		}
+		
+		# Ambil Log
+		
 		return Response(data)
 
 
@@ -116,13 +128,20 @@ class ProfileUsers(APIView):
 		#  Mengatur Waktu Date
 		waktu = user.created_at.strftime('%d %B %Y')	
 		cekrequest = req.headers.get('Authorization') == f"Bearer {token}"
+		getImage = user.profile.url if user.profile else None
+		pathImage = None
+		if getImage:
+			pathImage = f"{req.META['wsgi.url_scheme']}://{req.META['HTTP_HOST']}/{getImage}"
+		else:
+			pathImage = None
+		print(user.username)
 		data ={
 			"username":user.username,
 			"id_users":user.id,
 			"name":user.name,
 			"verify":user.verify,
 			"email":user.email,
-			"profile":user.profile.url if user.profile else None,
+			"profile":pathImage if user.profile is not None else None,
 			"bio":user.bio,
 			"follow":user.follow,
 			"date_joined":waktu,
@@ -151,8 +170,12 @@ class UpdateProfile(APIView):
 		if "bio" in req.data:
 			user.bio = req.data.get('bio')
 		user.save()
-
-		return Response({"status":200})
+		
+		serializer = ShowingUsers(user)
+		response = serializer.data
+		pathImage = f"{req.META['wsgi.url_scheme']}://{req.META['HTTP_HOST']}{serializer.data['profile']}"	
+		response['profile'] = pathImage
+		return Response(response,status=200)
 
 
 class FollowUser(APIView):
@@ -177,6 +200,28 @@ class FollowUser(APIView):
 			return Response({"status":200,"message":"Follow Sukses"})
 		return Response({"status":404,"message":"Ada Yang Salah Dari Id User"})
 
+class SearchingAcocunt(ListAPIView):
+	allowed_methods = 'GET'
+	serializer_class = SearchingAll
+	renderer_classes = [JSONRenderer]
+	authentication_classes = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
+	models = Users
+	
+	def get_queryset(self):
+		pk = self.kwargs.get('pk')
+		queryset = Users.objects.filter(username__contains=pk)
+		return queryset
+
+
+
+class ListFollowers(ListAPIView):
+	allowed_methods = 'GET'
+	authentication_classes  = [OAuth2Authentication]
+	permission_classes = [TokenHasResourceScope]
+	serializer_class = FollowersSerializer
+	model = Followers
+	queryset = Followers.objects.all()
 
 class CekDokumen(APIView):
 
