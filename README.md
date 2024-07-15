@@ -4,8 +4,9 @@
   </a>
 </h1>
 
-Why Did I Make This, When This News Appeared <a href="https://www.kompas.com/tren/read/2024/06/17/193000265/kominfo-ancam-putar-twitter-amankah-membuka-application -which-is-blocked-?page=all">, I was confused, why platforms that are widely used would be blocked, then I thought about challenging my skills to create a platform like this, even though it was only simple, and I only made the main features that were frequently used. Use.
+Why Did I Make This, When This News Appeared <a href="https://www.kompas.com/tren/read/2024/06/17/193000265/kominfo-ancam-putar-twitter-amankah-membuka-application -which-is-blocked-?page=all"> Kominfo Ancam Tutup Twitter, Amankah Membuka Aplikasi yang diblokir? </a>, I was confused, why platforms that are widely used would be blocked, then I thought about challenging my skills to create a platform like this, even though it was only simple, and I only made the main features that were frequently used. Use.
 
+## Available Features
 - **Login.** This is a normal, generally available feature
 - **Registration.** Create Account, Same Thing Like Login
 - **Tweet.** Features for creating tweets and uploading them. This feature can also use images/gifs, but cannot use videos
