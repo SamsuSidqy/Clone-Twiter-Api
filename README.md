@@ -1,4 +1,8 @@
-# Twitter-X-Clone-Django Rest API
+<h1 align="center">
+  <a href="https://reactnative.dev/">
+    React Native
+  </a>
+</h1>
 
 ## Installation
 
@@ -7,6 +11,14 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install all pac
 ```bash
 pip install -r requirements.txt
 ```
+## Running App
+
+**Running Recomended**
+```bash
+python3 manage.py runserver 0.0.0.0:8000
+```
+
+
 
 ## Register
 
