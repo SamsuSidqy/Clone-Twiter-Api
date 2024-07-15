@@ -26,8 +26,9 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'src'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ln%(7191y=d_b*!&@(nvmg(9x5leo%=)mh=*a7akl-e6wk6h45'
-KEY_FOR_API = 'm8-9i2YEH;B4f+1der4HFu[u*Gf"V:-?(rJ0maQGzrMvfmzS|qOyF1sA=4(O]T+O(;y3AWW;yuGvdTgbJbZ?HIQv"eM5'
-HEADER_KEY = 'x-Gue'
+
+KEY_FOR_API = 'This Your Key' # Value Your Custom Key Headers 
+HEADER_KEY = 'x-Gue' # Variabel Your Custom Key Headers
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -92,12 +93,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'api_tweet',
-        'USER':'samsoe',
-        'PASSWORD':'samsoe',
+        'ENGINE': '<Your Database (MYSQL,POSTGRESQL OR OTHER)>', #ME USE #django.db.backends.postgresql
+        'NAME': '<Your Database Name>',
+        'USER':'<Username For Database>',
+        'PASSWORD':'<Password Database>',
         'HOST':'localhost',
-        'PORT':5432
+        'PORT':#Port Database # POSTGRES 5432 #MYSQL 3306
     }
 }
 

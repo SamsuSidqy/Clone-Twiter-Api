@@ -223,18 +223,6 @@ class ListFollowers(ListAPIView):
 	model = Followers
 	queryset = Followers.objects.all()
 
-class CekDokumen(APIView):
-
-	def get(self,request,id):
-		if id != '66b7d80f-5507-4512-9246-9ad273eab6a4':
-			return HttpResponse("Hayyuu Mau Ngapain")
-		pwd = os.path.join(settings.BASE_DIR)
-		with open(f"{pwd}/src/dokumen/a.pdf",'rb') as pdf:
-			respon = HttpResponse(pdf.read(),content_type='application/pdf')
-			return respon
-		pdf.closed
-
-		# return HttpResponse('<h1>Hello World</h1>')
 
 
 
