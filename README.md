@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="#" style="color:#fff;">
-    Clone X_TWITTER Api
+    Clone X_Twitter Api
   </a>
 </h1>
 
