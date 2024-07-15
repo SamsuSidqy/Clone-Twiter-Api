@@ -4,26 +4,16 @@
   </a>
 </h1>
 
-<h2 align="center">
-  <strong> Fitur </strong>
-</h2>
-<h3 align="center">
-  <a href="#">Login</a>
-  <span> · </span>
-  <a href="#">Registration</a>
-  <span> · </span> 
-  <a href="#">Tweet</a>
-  <span> · </span>
-  <a href="#">Reply Tweet</a>
-  <span> · </span>
-  <a href="#">Upload Image</a>
-  <span> · </span>
-  <a href="#">Like & Unlike</a>
-  <span> · </span>
-  <a href="#">Follow & Unfollow</a>
-</h3>
+Why Did I Make This, When This News Appeared <a href="https://www.kompas.com/tren/read/2024/06/17/193000265/kominfo-ancam-putar-twitter-amankah-membuka-application -which-is-blocked-?page=all">, I was confused, why platforms that are widely used would be blocked, then I thought about challenging my skills to create a platform like this, even though it was only simple, and I only made the main features that were frequently used. Use.
 
-Kenapa Saya Membuat Ini, Pada Saat Berita Ini Muncul <a href="https://www.kompas.com/tren/read/2024/06/17/193000265/kominfo-ancam-tutup-twitter-amankah-membuka-aplikasi-yang-diblokir-?page=all">Kominfo Ancam Tutup Twitter Amankah Membuka Aplikasi yang diblokir?</a> , Saya Bingung, Kenapa Platforms Yang Banyak Di Gunakan Akan Di Blokir, Kemudian Saya Terpikir Untuk Menantang Skill Saya Untuk Membuat Platform Seperti Ini Walaupun Hanya Sederhana, Dan Saya  Hanya Membuat Fitur Utama Yang Sering Di Gunakan. 
+- **Login.** This is a normal, generally available feature
+- **Registration.** Create Account, Same Thing Like Login
+- **Tweet.** Features for creating tweets and uploading them. This feature can also use images/gifs, but cannot use videos
+- **Reply Tweet** This feature is for replying to every tweet you want to reply to. This feature can also reply with images/gifs, but not yet for videos.
+- **Like & Unlike** In this feature you can give like and dislike to each tweet that you want to like, and in this feature the logic "Each User Can Only Like 1 Tweet" has been created.
+- **Follow & Unfollow** In this feature, you can follow or unfollow all users, and in this feature the logic "Users can follow any user who is not yet followed" is implemented.
+- **Update Profile** With this feature, you can update your profile data, namely bio, username, name and profile picture
+- **Search User** In this feature you can search for users
 
 
 
