@@ -19,15 +19,17 @@ Why Did I Make This, When This News Appeared <a href="https://www.kompas.com/tre
 ## ⚠️ Dislaimer
 > "Nothing, My English Is Very Bad😂"
 
+## 🚀 Demo With Frontend
+<a href="https://youtu.be/D1zikGfkemw">Youtube</a>
 
-## Installation
+## 🥽 Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install all package needed.
 
 ```bash
 pip install -r requirements.txt
 ```
-## Running App
+## 🧑🏻‍💻 Running App
 
 **Running Recomended**
 ```bash
