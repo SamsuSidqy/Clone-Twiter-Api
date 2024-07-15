@@ -1,5 +1,4 @@
-# GuaGue-Twitter-X-Clone-Django
-# Dokumentasi API GuaGue, (Twiter / X) Clone
+# Twitter-X-Clone-Django Rest API
 
 ## Installation
 
