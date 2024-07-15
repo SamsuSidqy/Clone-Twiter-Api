@@ -6,7 +6,7 @@
 
 Why Did I Make This, When This News Appeared <a href="https://www.kompas.com/tren/read/2024/06/17/193000265/kominfo-ancam-putar-twitter-amankah-membuka-application -which-is-blocked-?page=all"> Kominfo Ancam Tutup Twitter, Amankah Membuka Aplikasi yang diblokir? </a>, I was confused, why platforms that are widely used would be blocked, then I thought about challenging my skills to create a platform like this, even though it was only simple, and I only made the main features that were frequently used. Use.
 
-## Available Features
+## Simple Features Available
 - **Login.** This is a normal, generally available feature
 - **Registration.** Create Account, Same Thing Like Login
 - **Tweet.** Features for creating tweets and uploading them. This feature can also use images/gifs, but cannot use videos
@@ -16,6 +16,8 @@ Why Did I Make This, When This News Appeared <a href="https://www.kompas.com/tre
 - **Update Profile** With this feature, you can update your profile data, namely bio, username, name and profile picture
 - **Search User** In this feature you can search for users
 
+## ⚠️ Dislaimer
+> "My aim in making this has no particular purpose or interest, I just want to challenge the skills I have"
 
 
 ## Installation
