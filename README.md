@@ -17,7 +17,7 @@ Why Did I Make This, When This News Appeared <a href="https://www.kompas.com/tre
 - **Search User** In this feature you can search for users
 
 ## ⚠️ Dislaimer
-> "My aim in making this has no particular purpose or interest, I just want to challenge the skills I have"
+> "Nothing"
 
 
 ## Installation
