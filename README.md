@@ -17,7 +17,7 @@ Why Did I Make This, When This News Appeared <a href="https://www.kompas.com/tre
 - **Search User** In this feature you can search for users
 
 ## ⚠️ Dislaimer
-> "Nothing"
+> "Nothing, My English Is Very Bad😂"
 
 
 ## Installation
