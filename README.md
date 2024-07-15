@@ -1,8 +1,29 @@
 <h1 align="center">
-  <a href="https://reactnative.dev/">
-    React Native
+  <a href="#" style="color:#fff;">
+    Clone X_TWITTER Api
   </a>
 </h1>
+
+<p align="center">
+  <strong> Fitur </strong>
+</p>
+<h3 align="center">
+  <a href="#">Login</a>
+  <span> · </span>
+  <a href="#">Registration</a>
+  <span> · </span> 
+  <a href="#">Tweet</a>
+  <span> · </span>
+  <a href="#">Reply Tweet</a>
+  <span> · </span>
+  <a href="#">Upload Image</a>
+  <span> · </span>
+  <a href="#">Like & Unlike</a>
+  <span> · </span>
+  <a href="#">Follow & Unfollow</a>
+  <span> · </span>
+</h3>
+
 
 ## Installation
 
