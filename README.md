@@ -4,9 +4,9 @@
   </a>
 </h1>
 
-<p align="center">
+<h2 align="center">
   <strong> Fitur </strong>
-</p>
+</h2>
 <h3 align="center">
   <a href="#">Login</a>
   <span> · </span>
@@ -21,9 +21,11 @@
   <a href="#">Like & Unlike</a>
   <span> · </span>
   <a href="#">Follow & Unfollow</a>
-  <span> · </span>
 </h3>
 
+Kenapa Saya Membuat Ini, Pada Saat Berita Ini Muncul [**Kominfo Ancam Tutup Twitter, Amankah Membuka Aplikasi yang diblokir?**] [r] , Saya Bingung, Kenapa Platforms Yang Banyak Di Gunakan Akan Di Blokir, Kemudian Saya Terpikir Untuk Menantang Skill Saya Untuk Membuat Platform Seperti Ini Walaupun Hanya Sederhana, Dan Saya  Hanya Membuat Fitur Utama Yang Sering Di Gunakan. 
+
+[r]:'https://www.kompas.com/tren/read/2024/06/17/193000265/kominfo-ancam-tutup-twitter-amankah-membuka-aplikasi-yang-diblokir-?page=all'
 
 ## Installation
 
