@@ -48,6 +48,7 @@ POST /api/v1/register
 | `username`| `string` | **Required**.|
 | `password`| `string` | **Required**.|
 | `Email`| `string` | **Required**|
+| `Name`| `string` | **Required**|
 
 | Authorization | Type    | Description                |
 | :-------- | :------- | :------------------------- |
