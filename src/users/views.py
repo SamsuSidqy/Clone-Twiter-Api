@@ -25,7 +25,7 @@ from users.models import Users,Followers
 
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class CreateUser(CreateAPIView):
@@ -57,31 +57,37 @@ class CreateUser(CreateAPIView):
 class LoginUsers(APIView):
 	def post(self,req):				
 		authorize = req.headers.get(settings.HEADER_KEY)
+		
 		if authorize is None :
 			return Response({"status":403},status=403)
 		elif authorize != settings.KEY_FOR_API:
 			return Response({"status":401},status=401)
 		elif "username" not in req.data or "password" not in req.data:
-			return Response({"status":400,"Message":"Username & Password Required"},status=400)
+			return Response({"status":400,"message":"Username & Password Required"},status=400)
 
 		username = req.data.get('username')
 		password = req.data.get('password')
 
 		ambilUser = Users.objects.filter(username=username).first()
 		if ambilUser is None:
-			return Response({"status":404,"message":"Username / Password Salah"},status=404)
+			return Response({"status":404,"message":"Users Tidak Ditemukan"},status=404)
 
 		if check_password(password,ambilUser.password) is False:
 			return Response({"status":404,"message":"Username / Password Salah"},status=404)
 		
-		
+		token = None
 		checkingToken = AccessToken.objects.filter(user=ambilUser).first()
+		expires30Days = datetime.now() + timedelta(30)
 
 		if checkingToken:
-			return Response({"status":401,"message":"Anda Sudah Login"})
-		token = generate_token()
-		createToken = AccessToken.objects.create(user=ambilUser,expires=datetime(2024,7,30),token=token)
-		
+			checkingToken.expires = expires30Days
+			checkingToken.save()
+			token = checkingToken
+		else:
+			token = generate_token()
+			createToken = AccessToken.objects.create(user=ambilUser,expires=expires30Days,token=token)
+			token = createToken
+
 		serializer = ShowingUsers(ambilUser)
 		pathImage = f"{req.META['wsgi.url_scheme']}://{req.META['HTTP_HOST']}{serializer.data['profile']}"
 		
@@ -91,13 +97,14 @@ class LoginUsers(APIView):
 			"id":serializer.data['id'],
 			"email":serializer.data['email'],
 			"profile": pathImage if serializer.data['profile'] else None,
-			"token":createToken.token,
-			"expires":createToken.expires
+			"created_at":serializer.data['date_joined'],
+			"token":token.token,
+			"expires":token.expires
 		}
 		
 		# Ambil Log
 		
-		return Response(data)
+		return Response(data,status=200)
 
 
 class LogoutUsers(APIView):

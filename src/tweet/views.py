@@ -41,7 +41,6 @@ class PostingTweet(CreateAPIView):
 		if "users" not in req.data or "content" not in req.data:
 			return Response({"status":400,"Message":"Membutuhkan Fields Users And Content"},status=400)
 		users = None
-		
 		slug = f"{uuid4()}-{datetime.now().year}{datetime.now().day}{datetime.now().month}"
 		data = {
 			"users":int(req.data.get('users')),

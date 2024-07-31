@@ -27,8 +27,8 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'src'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ln%(7191y=d_b*!&@(nvmg(9x5leo%=)mh=*a7akl-e6wk6h45'
 
-KEY_FOR_API = 'This Your Key' # Value Your Custom Key Headers 
-HEADER_KEY = 'x-Gue' # Variabel Your Custom Key Headers
+KEY_FOR_API = 'abisamsu' # Value Your Custom Key Headers 
+HEADER_KEY = 'X-Gue' # Variabel Your Custom Key Headers
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
+
     'rest_framework',
     'oauth2_provider',
     'ipware',
@@ -62,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -84,6 +87,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 
@@ -93,12 +97,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': '<Your Database (MYSQL,POSTGRESQL OR OTHER)>', #ME USE #django.db.backends.postgresql
-        'NAME': '<Your Database Name>',
-        'USER':'<Username For Database>',
-        'PASSWORD':'<Password Database>',
+        'ENGINE': 'django.db.backends.postgresql', #ME USE #django.db.backends.postgresql
+        'NAME': 'apitweet',
+        'USER':'samsoe',
+        'PASSWORD':'samsoe',
         'HOST':'localhost',
-        'PORT':#Port Database # POSTGRES 5432 #MYSQL 3306
+        'PORT':5432 # POSTGRES 5432 #MYSQL 3306
     }
 }
 
