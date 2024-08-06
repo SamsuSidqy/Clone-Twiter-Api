@@ -65,6 +65,6 @@ class ShowingUsers(serializers.ModelSerializer):
 class SearchingAll(serializers.ModelSerializer):
 	class Meta:
 		model = Users
-		fields = ['username','name','profile','id']
+		fields = ['username','name','profile','id','verify']
 
 

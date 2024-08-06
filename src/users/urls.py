@@ -8,7 +8,7 @@ urlpatterns = [
 	path('logout',LogoutUsers.as_view()),
 	path('profile/<str:pk>',ProfileUsers.as_view()),
 	path('profile/update/<int:pk>',UpdateProfile.as_view()),
-	path('follow/<int:pk>',FollowUser.as_view()),
+	path('follow/<int:pk>/<int:idfollow>',FollowUser.as_view()),
 	path('search/<str:pk>',SearchingAcocunt.as_view()),
 	path('follow/data',ListFollowers.as_view()),
 ]

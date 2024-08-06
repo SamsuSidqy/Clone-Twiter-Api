@@ -47,12 +47,13 @@ class PostingTweet(CreateAPIView):
 			"content":str(req.data['content']),
 			"slug":slug,
 			"created_at":datetime.now(),
-		}		
+		}
+		print(type(req.data.get('media')))		
 		if "media" in req.data:					
 			if req.data.get('media').size > 500000:			
 				return Response({"status":400,"message":"File Maksimum 400 KB"},status=400)
-			elif req.data.get('media').name.lower().endswith(('.jpg','.png','.gif')) is False:
-				return Response({"status":400,"message":"Only JPG / PNG / GIF"},status=400)
+			elif req.data.get('media').name.lower().endswith(('.jpg','.png','.gif','jpeg')) is False:
+				return Response({"status":400,"message":"Only JPG / PNG / GIF / JPEG"},status=400)
 			y = {"media":req.data.get('media')}
 			data.update(y)
 

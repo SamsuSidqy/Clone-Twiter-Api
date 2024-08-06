@@ -90,14 +90,14 @@ class LoginUsers(APIView):
 
 		serializer = ShowingUsers(ambilUser)
 		pathImage = f"{req.META['wsgi.url_scheme']}://{req.META['HTTP_HOST']}{serializer.data['profile']}"
-		
+		print(type(serializer.data['date_joined']))
 		data = {
 			"username":serializer.data['username'],
 			"name":serializer.data['name'],
 			"id":serializer.data['id'],
 			"email":serializer.data['email'],
 			"profile": pathImage if serializer.data['profile'] else None,
-			"created_at":serializer.data['date_joined'],
+			"created_at":datetime.fromisoformat(serializer.data['date_joined']).strftime("%d %B %Y"),
 			"token":token.token,
 			"expires":token.expires
 		}
@@ -167,7 +167,7 @@ class UpdateProfile(APIView):
 		user = Users.objects.filter(id=pk).first()
 		if user is None:
 			return Response({"status":404},status=404)
-
+		
 		if "username" in req.data:
 			user.username = req.data.get('username').replace(" ","").lower()
 		if "profile" in req.data:
@@ -189,9 +189,9 @@ class FollowUser(APIView):
 	allowed_methods = 'GET'
 	authentication_classes  = [OAuth2Authentication]
 	permission_classes = [TokenHasResourceScope]
-	def get(self,req,pk):
-		
-		userToFollow = Users.objects.filter(id=req.data.get('id_users')).first()
+	def get(self,req,pk,idfollow):
+		print(idfollow)
+		userToFollow = Users.objects.filter(id=idfollow).first()
 		followToUser = Users.objects.filter(id=pk).first()
 		if userToFollow is not None and followToUser is not None:
 			cek = Followers.objects.filter(userfollow=followToUser.id,followuser=userToFollow.id).first()
@@ -205,7 +205,7 @@ class FollowUser(APIView):
 			userToFollow.save()
 
 			return Response({"status":200,"message":"Follow Sukses"})
-		return Response({"status":404,"message":"Ada Yang Salah Dari Id User"})
+		return Response({"status":404,"message":"Ada Yang Salah Dari Id User"},status=404)
 
 class SearchingAcocunt(ListAPIView):
 	allowed_methods = 'GET'

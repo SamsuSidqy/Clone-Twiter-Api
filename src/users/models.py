@@ -11,11 +11,10 @@ class Users(AbstractUser):
 	bio = models.TextField(blank=True)
 	password = models.TextField()
 	follow = models.BigIntegerField(default=0)
-	created_at = models.DateTimeField(blank=True)
+	created_at = models.DateTimeField(blank=True,default=datetime.now())
 
 	def save(self,*args,**kwargs):
 		username = self.username.replace(" ","").lower()
-		self.created_at = datetime.now()
 		self.username = username
 		super(Users,self).save(*args,**kwargs)
 	

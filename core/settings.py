@@ -97,12 +97,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 DATABASES = {
     'default': {
-        'ENGINE': '', #ME USE #django.db.backends.postgresql
-        'NAME': '',
-        'USER':'',
-        'PASSWORD':'',
+        'ENGINE': 'django.db.backends.postgresql', #ME USE #django.db.backends.postgresql
+        'NAME': 'apitwet',
+        'USER':'samsoe',
+        'PASSWORD':'samsoe',
         'HOST':'localhost',
-        'PORT': # POSTGRES 5432 #MYSQL 3306
+        'PORT': 5432 # POSTGRES 5432 #MYSQL 3306
     }
 }
 
@@ -134,8 +134,9 @@ AUTH_USER_MODEL = 'users.Users'
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Jakarta'
-
 USE_I18N = True
+USE_L10N = True
+USE_TZ = False
 
 
 
