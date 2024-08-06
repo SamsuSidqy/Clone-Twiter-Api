@@ -129,16 +129,14 @@ POST /api/v1/profile/update/<int:id>
 *For `Follow` and `Unfollow`, there is in the same request, if you want to unfollow, do it  request  as `Follow`, send the same request*
 
 ```http
-GET /api/v1/follow/<int:id> 
+GET /api/v1/follow/<int:id>/<int:idfollow> 
 ```
 
 | Params | Type    | Description                |
 | :-------- | :------- | :------------------------- |
 | `id`| `integer` | **Required** , *Your Id*|
+| `idfollow`| `integer` | **Required** , *Id Your Want Follow*|
 
-| Body (JSON) | Type    | Description                |
-| :-------- | :------- | :------------------------- |
-| `id_users`| `integer` | **Required** , *Id Your Want Follow*|
 
 | Authorization | Type    | Description                |
 | :-------- | :------- | :------------------------- |
