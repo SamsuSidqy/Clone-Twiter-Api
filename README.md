@@ -225,3 +225,27 @@ GET /api/users/v1/likes/<int:id>/<int:author>
 | Authorization | Type    | Description                |
 | :-------- | :------- | :------------------------- |
 | `Bearer`| `token` | **Required**.|
+
+
+## Searching User
+```http
+GET /api/v1/search/<str:username>
+```
+| Params | Type    | Description                |
+| :-------- | :------- | :------------------------- |
+| `username`| `string` | **Required** , Username Users|
+
+| Authorization | Type    | Description                |
+| :-------- | :------- | :------------------------- |
+| `Bearer`| `token` | **Required**.|
+
+## Data Follow All
+```http
+GET /api/v1/follow/data
+```
+
+| Authorization | Type    | Description                |
+| :-------- | :------- | :------------------------- |
+| `Bearer`| `token` | **Required**.|
+
+
